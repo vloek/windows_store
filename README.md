@@ -17,7 +17,7 @@ Or install it yourself as:
     $ gem install windows_store
 
 ## Usage
-WindowsStore.verify! File.read('receipt.xml')
+    WindowsStore.verify! File.read('receipt.xml')
 
 
 ## Test
