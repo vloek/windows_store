@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'rest_client'
   spec.add_dependency 'xmldsig'
+  spec.add_dependency 'json'
 end
