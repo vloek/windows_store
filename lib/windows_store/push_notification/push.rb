@@ -23,11 +23,16 @@ module WindowsStore::PushNotification
         "Authorization" => "#{@auth_info['token_type'].capitalize} #{@auth_info['access_token']}", 
         "Host"=>"db3.notify.windows.com"
       }
-      
+
       begin 
-        RestClient.post(@device_token, notify.to_s, headers )
+        url = 'https://' + @device_token
+        RestClient.post(url, notify.to_s, headers )
       rescue => e
-        $stderr.puts 'Error #{e}' 
+        $stderr.puts "Error #{e}"
+        $stderr.puts "Headers: #{headers}"
+        $stderr.puts "Notify: #{notify.to_s}"
+        $stderr.puts "URI: #{@device_token}"
+        $stderr.puts '-----'
       end
     end
 
