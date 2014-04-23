@@ -26,7 +26,10 @@ module WindowsStore::PushNotification
 
       begin 
         url = 'https://' + @device_token
-        RestClient.post(url, notify.to_s, headers )
+        puts url 
+        RestClient.post(url, notify.to_s, headers) do |response|
+          puts response.headers
+        end
       rescue => e
         $stderr.puts "Error #{e}"
         $stderr.puts "Headers: #{headers}"
