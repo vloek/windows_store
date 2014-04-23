@@ -6,15 +6,19 @@ module WindowsStore::PushNotification
       @text = text
     end
 
+    def type
+      'toast'
+    end
+
     def to_s
       return %Q(
-      <toast>
-        <visual>
-            <binding template="ToastText01">
-                <text id="1">#{text}</text>
-            </binding>  
-        </visual>
-      </toast>
+        <toast>
+          <visual>
+              <binding template="ToastText01">
+                  <text id="1">#{text}</text>
+              </binding>  
+          </visual>
+        </toast>
       )
     end
   end
