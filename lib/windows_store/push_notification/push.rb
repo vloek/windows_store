@@ -1,10 +1,11 @@
 module WindowsStore::PushNotification
   class Push
-    attr :secret, :app_id, :auth_info
+    attr :secret, :app_id, :auth_info, :device_token
 
     
-    def initialize(secret, app_id)
+    def initialize(secret, app_id, device_token)
       @secret, @app_id = secret, app_id
+      @device_token    = device_token
       auth! 
     end
 
@@ -21,7 +22,7 @@ module WindowsStore::PushNotification
         "Authorization" => "Bearer EgAdAQMAAAAEgAAAC4AAZWP9Y2TS8I+YMZCGERD4BVDQ6OOa+4WDM4FeFMMnG5e+T7tJV0Kyz/vmxsrMAYLKutBSKTq9By4FyzUey+3y9WoGspxYdVdzgH6IYoMA57RSGzZaQMBPaoqTKtlWWA8RhWxBnxJz++j/OIYOZTOyE3jS3VMgH2z5dH4LxwOaOT6MAFoAjAAAAAAAi2URRFVdVlNVXVZT60gEAA4AODQuNDcuMTUyLjI0MgAAAAAAXgBtcy1hcHA6Ly9zLTEtMTUtMi0yNjg3NTM2MDYzLTM1ODc4MzUwMzEtMzQyMDUwMjUzLTE4OTI2ODUxMzAtMTE3OTgyNTI1My0zMDY3NTIwOTgwLTE1OTAxODc0OTcA", 
         "Host"=>"db3.notify.windows.com"}
 
-      RestClient.post(@app_id, notify.to_s, content_type: 'text/xml', 'X-WNS-Type' => "wns/#{notify.type}", authorization: "#{@auth_info['token_type'].capitalize} #{@auth_info['access_token']}")
+      RestClient.post(@device_token, notify.to_s, content_type: 'text/xml', 'X-WNS-Type' => "wns/#{notify.type}", authorization: "#{@auth_info['token_type'].capitalize} #{@auth_info['access_token']}")
     end
 
     def auth!
