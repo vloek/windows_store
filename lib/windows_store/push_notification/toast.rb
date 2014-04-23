@@ -2,7 +2,7 @@ module WindowsStore::PushNotification
   class Toast
     attr :text
 
-    def inititalize(text)
+    def initialize(text)
       @text = text
     end
 

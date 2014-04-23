@@ -11,6 +11,7 @@ module WindowsStore::PushNotification
 
 
     def send_notify(msg, type='toast', options={})
+      notify = ''
       case type
       when 'toast'
         notify = Toast.new(msg)
@@ -18,11 +19,16 @@ module WindowsStore::PushNotification
 
       headers = {
         "Content-Type"  => "text/xml", 
-        "X-WNS-Type"    => "wns/tile", 
-        "Authorization" => "Bearer EgAdAQMAAAAEgAAAC4AAZWP9Y2TS8I+YMZCGERD4BVDQ6OOa+4WDM4FeFMMnG5e+T7tJV0Kyz/vmxsrMAYLKutBSKTq9By4FyzUey+3y9WoGspxYdVdzgH6IYoMA57RSGzZaQMBPaoqTKtlWWA8RhWxBnxJz++j/OIYOZTOyE3jS3VMgH2z5dH4LxwOaOT6MAFoAjAAAAAAAi2URRFVdVlNVXVZT60gEAA4AODQuNDcuMTUyLjI0MgAAAAAAXgBtcy1hcHA6Ly9zLTEtMTUtMi0yNjg3NTM2MDYzLTM1ODc4MzUwMzEtMzQyMDUwMjUzLTE4OTI2ODUxMzAtMTE3OTgyNTI1My0zMDY3NTIwOTgwLTE1OTAxODc0OTcA", 
-        "Host"=>"db3.notify.windows.com"}
-
-      RestClient.post(@device_token, notify.to_s, content_type: 'text/xml', 'X-WNS-Type' => "wns/#{notify.type}", authorization: "#{@auth_info['token_type'].capitalize} #{@auth_info['access_token']}")
+        "X-WNS-Type"    => "wns/#{notify.type}",
+        "Authorization" => "#{@auth_info['token_type'].capitalize} #{@auth_info['access_token']}", 
+        "Host"=>"db3.notify.windows.com"
+      }
+      
+      begin 
+        RestClient.post(@device_token, notify.to_s, headers )
+      rescue => e
+        $stderr.puts 'Error #{e}' 
+      end
     end
 
     def auth!
