@@ -24,8 +24,8 @@ module WindowsStore::PushNotification
         req['X-WNS-Type']    = "wns/#{notify.type}"
         req['Authorization'] = "#{@auth_info['token_type'].capitalize} #{@auth_info['access_token']}"
         req.body = notify.to_s
-        
-        Net::HTTP.start(uri.request_uri, uri.port, use_ssl: true) { |http| http.request req }
+
+        Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request req }
         # RestClient.post(url, notify.to_s, headers) do |response|
           # puts response.headers
         # end
