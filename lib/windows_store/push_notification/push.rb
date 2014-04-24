@@ -17,25 +17,20 @@ module WindowsStore::PushNotification
         notify = Toast.new(msg)
       end
 
-      headers = {
-        "Content-Type"  => "text/xml", 
-        "X-WNS-Type"    => "wns/#{notify.type}",
-        "Authorization" => "#{@auth_info['token_type'].capitalize} #{@auth_info['access_token']}", 
-        "Host"=>"db3.notify.windows.com"
-      }
-
       begin 
-        url = 'https://' + @device_token
-        puts url 
-        RestClient.post(url, notify.to_s, headers) do |response|
-          puts response.headers
-        end
+        uri = URI.parse ('https://' + @device_token)
+        req = Net::HTTP::Post.new uri.request_uri
+        req['content-type']  = "text/xml"
+        req['X-WNS-Type']    = "wns/#{notify.type}"
+        req['Authorization'] = "#{@auth_info['token_type'].capitalize} #{@auth_info['access_token']}"
+        req.body = notify.to_s
+        
+        Net::HTTP.start(uri.request_uri, uri.port, use_ssl: true) { |http| http.request req }
+        # RestClient.post(url, notify.to_s, headers) do |response|
+          # puts response.headers
+        # end
       rescue => e
         $stderr.puts "Error #{e}"
-        $stderr.puts "Headers: #{headers}"
-        $stderr.puts "Notify: #{notify.to_s}"
-        $stderr.puts "URI: #{@device_token}"
-        $stderr.puts '-----'
       end
     end
 
