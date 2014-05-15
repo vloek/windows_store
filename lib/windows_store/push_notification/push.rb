@@ -15,6 +15,8 @@ module WindowsStore::PushNotification
       case type
       when 'toast'
         notify = Toast.new(msg)
+      when 'tile'
+        notify = Tile.new(msg)
       end
 
       begin 
