@@ -1,20 +1,17 @@
 # WindowsStore
 
-Windows Store receipt verify gem
+Windows Store receipt verify and push notification for windows8+(tile, toast) gem.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'windows_store'
+    gem 'windows_store', git: 'git://github.com/vloek/windows_store.git', tag: 'v0.1.2'
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install windows_store
 
 ## Usage
     WindowsStore.verify! File.read('receipt.xml')
@@ -22,7 +19,7 @@ Or install it yourself as:
 
 ## Test
 
-    $ rake spec
+    =(
     
 ## Contributing
 
