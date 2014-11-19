@@ -4,8 +4,11 @@ module WindowsStore::PushNotification
     def to_s
       return %Q(
         <tile>
-          <visual>
-            <binding template="TileWideText01">
+          <visual version="2">
+            <binding template="TileWide310x150Text01" fallback="TileWideText01">
+              <text id="1">#{text}</text>
+            </binding>
+            <binding template="TileSquare150x150Text01" fallback="TileSquareText01">
               <text id="1">#{text}</text>
             </binding>
           </visual>
