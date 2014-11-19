@@ -1,25 +1,30 @@
 module WindowsStore::PushNotification
-  class Toast
-    attr :text
+  class Toast < CommonPushType
 
-    def initialize(text)
-      @text = text
-    end
-
-    def type
-      'toast'
-    end
-
-    def to_s
+    def to_xml
       return %Q(
-        <toast>
+        <toast launch='#{launch_link}'>
           <visual>
-              <binding template="ToastText01">
-                  <text id="1">#{text}</text>
-              </binding>  
+            <binding template="ToastText01">
+              <text id="1">#{text}</text>
+            </binding>
           </visual>
         </toast>
       )
     end
+
+    def launch_link
+      link = '' unless options[:book_id] || options[:toast_action]
+      link ||=  case options[:toast_action].to_s
+                when 'open'
+                  "orfogr://book/open?id=#{options[:book_id].to_i}"
+                when 'download'
+                  "orfogr://book/download?id=#{options[:book_id].to_i}"
+                else
+                  ''
+                end
+      encode(link)
+    end
+
   end
 end
