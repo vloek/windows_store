@@ -1,6 +1,6 @@
 module WindowsStore::PushNotification
   class Push
-    attr :secret, :app_id, :auth_info, :device_token
+    attr_accessor :secret, :app_id, :auth_info, :device_token
 
     def initialize(secret, app_id, device_token)
       @secret, @app_id = secret, app_id
@@ -8,14 +8,14 @@ module WindowsStore::PushNotification
       authenticate!
     end
 
-    def send_notify(msg, type='toast', options={})
-      notify =  case type.to_s
+    def send_notify(msg, options={})
+      notify =  case options[:type].to_s
                 when 'toast'
-                  Toast.new(msg)
+                  Toast.new(msg, options)
                 when 'tile'
-                  Tile.new(msg)
+                  Tile.new(msg, options)
                 else
-                  raise "#{type} is unknown type of push"
+                  raise "#{options[:type].to_s} is unknown type of push"
                 end
 
       uri = URI.parse('https://' + @device_token)
@@ -24,7 +24,7 @@ module WindowsStore::PushNotification
       req['X-WNS-Type']    = "wns/#{notify.type}"
       req['Authorization'] =
         "#{@auth_info['token_type'].capitalize} #{@auth_info['access_token']}"
-      req.body = notify.to_s
+      req.body = notify.to_xml
 
       Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
         http.request req

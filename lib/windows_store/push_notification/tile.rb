@@ -1,7 +1,7 @@
 module WindowsStore::PushNotification
   class Tile < CommonPushType
 
-    def to_s
+    def to_xml
       return %Q(
         <tile>
           <visual version="2">
