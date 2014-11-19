@@ -14,16 +14,7 @@ module WindowsStore::PushNotification
     end
 
     def launch_link
-      link = '' unless options[:book_id] || options[:toast_action]
-      link ||=  case options[:toast_action].to_s
-                when 'open'
-                  "orfogr://book/open?id=#{options[:book_id].to_i}"
-                when 'download'
-                  "orfogr://book/download?id=#{options[:book_id].to_i}"
-                else
-                  ''
-                end
-      encode(link)
+      ''
     end
 
   end
